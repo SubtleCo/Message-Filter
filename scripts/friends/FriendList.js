@@ -2,6 +2,7 @@ import { useFriends } from "./FriendProvider.js"
 
 // DOM element where friends will be rendered
 const contentTarget = document.querySelector(".friends")
+const eventHub = document.querySelector(".container")
 
 // Function that renders a collection of friends
 const render = friendCollection => {
@@ -18,6 +19,18 @@ const render = friendCollection => {
         }
     `
 }
+
+eventHub.addEventListener("change", cE => {
+    if(cE.target.classList.contains("friend")) {
+        const selectedFriend = cE.target.value
+        const message = new CustomEvent("friendSelected", {
+            detail: {
+                friend: selectedFriend
+            }
+        })
+        eventHub.dispatchEvent(message)
+    }
+})
 
 // Component function for initial rendering of friends
 export const FriendList = () => {
